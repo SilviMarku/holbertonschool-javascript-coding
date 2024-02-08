@@ -1,8 +1,8 @@
-const fs = require('fs');
+const fs = require('fs').promises;
 
-function countStudents(path) {
+async function countStudents(path) {
   try {
-    const data = fs.readFileSync(path, 'utf8');
+    const data = await fs.readFile(path, 'utf8');
     const lines = data.trim().split('\n');
     lines.shift();
 
@@ -21,7 +21,8 @@ function countStudents(path) {
     }
 
     for (const [field, count] of Object.entries(fieldObj)) {
-      const st = lines.filter((line) => line.endsWith(field))
+      const st = lines
+        .filter((line) => line.endsWith(field))
         .map((line) => line.split(',')[0])
         .join(', ');
       console.log(`Number of students in ${field}: ${count}. List: ${st}`);
